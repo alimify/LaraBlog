@@ -11,16 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','FrontController@index')->name('front.index');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['as' => 'admin.','prefix' => 'admin','namespace' => 'Admin','middleware' => ['auth','admin']],function(){
     Route::get('dashboard','DashboardController@index')->name('index');
+    Route::resource('tag','TagController');
+    Route::resource('category','CategoryController');
+
 });
 
 Route::group(['as' => 'author.','prefix' => 'author','namespace' => 'Author','middleware' => ['auth','author']],function(){
