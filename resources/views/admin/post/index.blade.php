@@ -1,6 +1,6 @@
 @extends('layouts.backend.app')
 
-@section('title','Tags')
+@section('title','All Posts')
 
 @push('css')
     <!-- JQuery DataTable Css -->
@@ -13,7 +13,7 @@
         <div class="container-fluid">
             <div class="block-header">
                 <h2>
-                    <a class="btn btn-primary btn-lg m-l-15 waves-effect" href="{{route('admin.tag.create')}}">Crate new</a>
+                    <a class="btn btn-primary btn-lg m-l-15 waves-effect" href="{{route('admin.post.create')}}">Crate new</a>
 
                 </h2>
             </div>
@@ -24,8 +24,8 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                            All Tags
-                                <span class="btn bg-info bg-blue">{{$tags->count()}}</span>
+                            All Posts
+                                <span class="btn bg-info bg-blue">{{$posts->count()}}</span>
                             </h2>
                         </div>
                         <div class="body">
@@ -34,8 +34,11 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Total Posts</th>
+                                        <th>Title</th>
+                                        <th>Author</th>
+                                        <th><i class="material-icons">visibility</i></th>
+                                        <th>Status</th>
+                                        <th>Is Approved</th>
                                         <th>Created AT</th>
                                         <th>Updated AT</th>
                                         <th>Actions</th>
@@ -44,8 +47,11 @@
                                     <tfoot>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Total Posts</th>
+                                        <th>Title</th>
+                                        <th>Author</th>
+                                        <th><i class="material-icons">visibility</i></th>
+                                        <th>Status</th>
+                                        <th>Is Approved</th>
                                         <th>Created AT</th>
                                         <th>Updated AT</th>
                                         <th>Actions</th>
@@ -53,16 +59,32 @@
                                     </tfoot>
                                     <tbody>
 
-                                 @foreach($tags as $key => $tag)
+                                 @foreach($posts as $key => $post)
                                      <tr>
                                         <td>{{$key + 1}}</td>
-                                        <td>{{$tag->name}}</td>
-                                         <td>{{$tag->posts->count()}}</td>
-                                        <td>{{$tag->created_at}}</td>
-                                        <td>{{$tag->updated_at}}</td>
+                                        <td>{{$post->title}}</td>
+                                         <td>{{$post->user->name}}</td>
+                                        <td>{{$post->view}}</td>
+                                         <td>
+
+                                             @if($post->status)
+                                             <span class="badge bg-blue">Published</span>
+                                             @else
+                                                 <span class="badge bg-pink">Pending</span>
+                                             @endif
+                                         </td>
+                                         <td>
+                                         @if($post->is_approved)
+                                          <span class="badge bg-blue">Approved</span>
+                                         @else
+                                          <span class="badge bg-pink">Pending</span>
+                                          @endif
+                                         </td>
+                                         <td>{{$post->created_at}}</td>
+                                        <td>{{$post->updated_at}}</td>
                                         <td>
-                                            <a href="{{route('admin.tag.edit',$tag->id)}}"><i class="material-icons">mode_edit</i></a> \
-                                            <a href="javascript:void(0)" onclick="deleteIt({{$tag->id}})"><i class="material-icons">delete</i></a>
+                                            <a href="{{route('admin.post.edit',$post->id)}}"><i class="material-icons">mode_edit</i></a> \
+                                            <a href="javascript:void(0)" onclick="deleteIt({{$post->id}})"><i class="material-icons">delete</i></a>
                                         </td>
                                      </tr>
                                  @endforeach
@@ -99,41 +121,45 @@
 
     <!-- Demo Js -->
     <script src="{{asset('assets/backend/js/demo.js')}}"></script>
-
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     <script>
 function deleteIt(id)   {
+
     swal({
         title: "Are you sure?",
-        text: "Once deleted, you will not be able to recover this tag",
+        text: "Once deleted, you will not be able to recover this category",
         icon: "warning",
         buttons: true,
         dangerMode: true,
     })
         .then((willDelete) => {
             if (willDelete) {
-    let deleteForm = document.createElement('form'),
-        currentURL = `{{route('admin.tag.destroy','deleteid')}}`,
-        deleteURL = currentURL.replace('deleteid',id),
-        csrfInput = document.createElement('input'),
-        methodInput = document.createElement('input')
-        deleteForm.style.display = 'none';
-        deleteForm.method = 'POST'
-        deleteForm.action = deleteURL
-        csrfInput.name = `_token`
-        csrfInput.value = `{{csrf_token()}}`
-        methodInput.name = `_method`
-        methodInput.value = `DELETE`
-        deleteForm.appendChild(csrfInput)
-        deleteForm.appendChild(methodInput)
-       document.body.appendChild(deleteForm)
-        deleteForm.submit()
+
+                let deleteForm = document.createElement('form'),
+                    currentURL = `{{route('admin.post.destroy','deleteid')}}`,
+                    deleteURL = currentURL.replace('deleteid',id),
+                    csrfInput = document.createElement('input'),
+                    methodInput = document.createElement('input')
+                deleteForm.style.display = 'none';
+                deleteForm.method = 'POST'
+                deleteForm.action = deleteURL
+                csrfInput.name = `_token`
+                csrfInput.value = `{{csrf_token()}}`
+                methodInput.name = `_method`
+                methodInput.value = `DELETE`
+                deleteForm.appendChild(csrfInput)
+                deleteForm.appendChild(methodInput)
+                document.body.appendChild(deleteForm)
+                deleteForm.submit()
 
 
-} else {
-    swal("Your tag is safe!");
-}
-});
+
+            } else {
+                swal("Your category is safe!");
+            }
+        });
+
 }
 
     </script>

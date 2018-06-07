@@ -25,6 +25,7 @@
                         <div class="header">
                             <h2>
                             All Categories
+                                <span class="btn bg-info bg-blue">{{$categories->count()}}</span>
                             </h2>
                         </div>
                         <div class="body">
@@ -35,6 +36,7 @@
                                         <th>ID</th>
                                         <th>Name</th>
                                         <th>Image</th>
+                                        <th>Total Posts</th>
                                         <th>Created AT</th>
                                         <th>Updated AT</th>
                                         <th>Actions</th>
@@ -45,6 +47,7 @@
                                         <th>ID</th>
                                         <th>Name</th>
                                         <th>Image</th>
+                                        <th>Total Posts</th>
                                         <th>Created AT</th>
                                         <th>Updated AT</th>
                                         <th>Actions</th>
@@ -57,11 +60,12 @@
                                         <td>{{$key + 1}}</td>
                                         <td>{{$category->name}}</td>
                                          <td><img src="{{asset('storage/category/slider/'.$category->image)}}" width="100px"></td>
-                                        <td>{{$category->created_at}}</td>
+                                        <td>{{$category->posts->count()}}</td>
+                                         <td>{{$category->created_at}}</td>
                                         <td>{{$category->updated_at}}</td>
                                         <td>
                                             <a href="{{route('admin.category.edit',$category->id)}}"><i class="material-icons">mode_edit</i></a> \
-                                            <a href="javascript:void(0)" onclick="deleteTag({{$category->id}})"><i class="material-icons">delete</i></a>
+                                            <a href="javascript:void(0)" onclick="deleteIt({{$category->id}})"><i class="material-icons">delete</i></a>
                                         </td>
                                      </tr>
                                  @endforeach
@@ -101,7 +105,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script>
-function deleteTag(id)   {
+function deleteIt(id)   {
 
     swal({
         title: "Are you sure?",

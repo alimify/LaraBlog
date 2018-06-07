@@ -21,6 +21,7 @@ Route::group(['as' => 'admin.','prefix' => 'admin','namespace' => 'Admin','middl
     Route::get('dashboard','DashboardController@index')->name('index');
     Route::resource('tag','TagController');
     Route::resource('category','CategoryController');
+    Route::resource('post','PostController');
 
 });
 

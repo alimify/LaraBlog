@@ -60,10 +60,10 @@ class CategoryController extends Controller
 
             $imageName = $slug.'-'.uniqid().'.'.$image->getClientOriginalExtension();
 
-            $category = Image::make($image)->resize(1600,479)->save($imageName);
+            $category = Image::make($image)->resize(1600,479)->save('tmp/file.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('category/'.$imageName,$category);
 
-            $slider = Image::make($image)->resize(500,333)->save($imageName);
+            $slider = Image::make($image)->resize(500,333)->save('tmp/file.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('category/slider/'.$imageName,$slider);
 
 
@@ -132,10 +132,10 @@ class CategoryController extends Controller
 
             $imageName = $slug.'-'.uniqid().'.'.$image->getClientOriginalExtension();
 
-            $categoryIM = Image::make($image)->resize(1600,479)->save($imageName);
+            $categoryIM = Image::make($image)->resize(1600,479)->save('tmp/file.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('category/'.$imageName,$categoryIM);
 
-            $sliderIM = Image::make($image)->resize(500,333)->save($imageName);
+            $sliderIM = Image::make($image)->resize(500,333)->save('tmp/file.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('category/slider/'.$imageName,$sliderIM);
 
 
